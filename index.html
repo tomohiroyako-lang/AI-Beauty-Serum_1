@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Beauty Serum | LUMIÈRE</title>
+
+  <!-- dataLayer 初期化 -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+  </script>
+
+  <!-- Google Tag Manager をここに設置 -->
+  <!-- GTM head snippet ↓ -->
+  <!-- <script>(function(w,d,s,l,i){...})</script> -->
+
+  <style>
+    :root {
+      --cream: #fdf8f4;
+      --blush: #f2d9d0;
+      --rose: #c9796a;
+      --rose-dark: #a85f52;
+      --taupe: #8a7570;
+      --text: #3a2e2b;
+      --text-light: #7a6e6b;
+      --border: #ecddd8;
+      --white: #ffffff;
+      --shadow: 0 4px 24px rgba(180,120,100,0.10);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--cream);
+      font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* Header */
+    header {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 24px;
+      text-align: center;
+    }
+    .logo {
+      font-size: 22px;
+      letter-spacing: 0.18em;
+      color: var(--rose);
+      font-weight: 300;
+    }
+    .logo span { font-weight: 700; }
+
+    /* Main */
+    main {
+      max-width: 480px;
+      margin: 40px auto;
+      padding: 0 20px 60px;
+    }
+
+    /* Product Card */
+    .product-card {
+      background: var(--white);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    /* Product Image (CSS/SVG placeholder) */
+    .product-image {
+      width: 100%;
+      height: 280px;
+      background: linear-gradient(145deg, #f7ebe6 0%, #edd5cc 50%, #e8c8be 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .product-image::before {
+      content: '';
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(255,255,255,0.6) 0%, transparent 70%);
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    /* SVG Serum Bottle */
+    .serum-svg {
+      width: 110px;
+      filter: drop-shadow(0 8px 20px rgba(180,100,80,0.25));
+    }
+
+    /* Product Info */
+    .product-info {
+      padding: 28px 28px 32px;
+    }
+    .product-badge {
+      display: inline-block;
+      background: var(--blush);
+      color: var(--rose-dark);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+    .product-name {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+    .product-sub {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-bottom: 18px;
+      line-height: 1.6;
+    }
+
+    /* Stars */
+    .stars {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 18px;
+    }
+    .star-icons { color: #f0b060; font-size: 16px; letter-spacing: 2px; }
+    .review-count { font-size: 12px; color: var(--text-light); }
+
+    /* Divider */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 18px 0;
+    }
+
+    /* Price */
+    .price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .price {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--rose);
+    }
+    .price-tax {
+      font-size: 13px;
+      color: var(--text-light);
+    }
+    .price-note {
+      font-size: 12px;
+      color: var(--text-light);
+      margin-bottom: 22px;
+    }
+
+    /* Add to Cart Button */
+    .btn-cart {
+      display: block;
+      width: 100%;
+      padding: 16px;
+      background: var(--rose);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-cart:hover { background: var(--rose-dark); }
+    .btn-cart:active { transform: scale(0.98); }
+
+    /* Features */
+    .features {
+      margin-top: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 16px;
+      background: var(--cream);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+    .feature-icon {
+      font-size: 20px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .feature-text strong {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+    .feature-text span {
+      font-size: 12px;
+      color: var(--text-light);
+      line-height: 1.5;
+    }
+
+    footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 12px;
+      color: var(--text-light);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Google Tag Manager (noscript) をここに設置 -->
+  <!-- <noscript>...</noscript> -->
+
+  <header>
+    <div class="logo">LUMI<span>ÈRE</span></div>
+  </header>
+
+  <main>
+    <div class="product-card">
+
+      <!-- 商品画像 (CSS + SVGプレースホルダー) -->
+      <div class="product-image">
+        <svg class="serum-svg" viewBox="0 0 110 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Cap -->
+          <rect x="38" y="10" width="34" height="16" rx="5" fill="#c9796a"/>
+          <rect x="44" y="4" width="22" height="12" rx="4" fill="#d98a7b"/>
+          <!-- Neck -->
+          <rect x="46" y="26" width="18" height="14" rx="3" fill="#e8bfb8"/>
+          <!-- Body -->
+          <rect x="22" y="40" width="66" height="130" rx="18" fill="white" stroke="#ecddd8" stroke-width="1.5"/>
+          <!-- Liquid gradient -->
+          <rect x="23" y="80" width="64" height="89" rx="0" fill="url(#liquidGrad)"/>
+          <rect x="22" y="150" width="66" height="20" rx="18" fill="url(#liquidGrad)"/>
+          <!-- Label -->
+          <rect x="32" y="52" width="46" height="80" rx="8" fill="#fdf0ed"/>
+          <!-- Label text lines -->
+          <rect x="40" y="62" width="30" height="4" rx="2" fill="#c9796a" opacity="0.7"/>
+          <rect x="37" y="72" width="36" height="3" rx="2" fill="#d0a09a" opacity="0.5"/>
+          <rect x="40" y="79" width="30" height="3" rx="2" fill="#d0a09a" opacity="0.4"/>
+          <!-- Brand mark -->
+          <circle cx="55" cy="102" r="12" fill="#f2d9d0"/>
+          <text x="55" y="107" text-anchor="middle" font-size="11" fill="#c9796a" font-family="Georgia, serif" font-style="italic">L</text>
+          <!-- Shimmer -->
+          <ellipse cx="36" cy="70" rx="5" ry="18" fill="white" opacity="0.25"/>
+          <defs>
+            <linearGradient id="liquidGrad" x1="22" y1="80" x2="88" y2="170" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#f2d9d0" stop-opacity="0.7"/>
+              <stop offset="100%" stop-color="#e8bfb8" stop-opacity="0.9"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
+      <!-- 商品情報 -->
+      <div class="product-info">
+        <span class="product-badge">NEW ARRIVAL</span>
+        <h1 class="product-name">AI Beauty Serum</h1>
+        <p class="product-sub">先進のAIテクノロジーが導く、あなただけの美肌体験。<br>朝夜の2ステップで、輝くような素肌へ。</p>
+
+        <div class="stars">
+          <span class="star-icons">★★★★★</span>
+          <span class="review-count">レビュー 342件</span>
+        </div>
+
+        <hr class="divider">
+
+        <div class="price-row">
+          <span class="price">¥4,200</span>
+          <span class="price-tax">（税込）</span>
+        </div>
+        <p class="price-note">送料無料 · 30mL</p>
+
+        <!-- カートに追加ボタン -->
+        <button id="add-to-cart-button" class="btn-cart">カートに追加する</button>
+      </div>
+    </div>
+
+    <!-- 特徴リスト -->
+    <div class="features">
+      <div class="feature-item">
+        <span class="feature-icon">✨</span>
+        <div class="feature-text">
+          <strong>高浸透ヒアルロン酸配合</strong>
+          <span>3種のヒアルロン酸が肌の奥まで潤いを届け、もっちり感が続く。</span>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">🌿</span>
+        <div class="feature-text">
+          <strong>無添加・低刺激処方</strong>
+          <span>パラベン・アルコールフリー。敏感肌の方にも安心してお使いいただけます。</span>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">🧪</span>
+        <div class="feature-text">
+          <strong>皮膚科テスト済み</strong>
+          <span>国内皮膚科専門医の監修のもと、臨床テストを実施しています。</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>© 2025 LUMIÈRE Beauty. All rights reserved.</footer>
+
+  <script>
+    // ページロード時イベント: view_content
+    window.dataLayer = window.dataLayer || [];
+    dataLayer.push({
+      event: "view_content",
+      content_id: "beauty_serum_001",
+      value: 4200,
+      currency: "JPY"
+    });
+
+    // カートに追加ボタン
+    document.getElementById("add-to-cart-button").addEventListener("click", function () {
+      // クリック時イベント: add_to_cart
+      dataLayer.push({
+        event: "add_to_cart",
+        content_id: "beauty_serum_001",
+        value: 4200,
+        currency: "JPY"
+      });
+
+      // cart.html へ遷移
+      window.location.href = "cart.html";
+    });
+  </script>
+
+</body>
+</html>

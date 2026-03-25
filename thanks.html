@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ご購入ありがとうございます | LUMIÈRE</title>
+
+  <!-- dataLayer 初期化 -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+  </script>
+
+  <!-- Google Tag Manager をここに設置 -->
+  <!-- GTM head snippet ↓ -->
+  <!-- <script>(function(w,d,s,l,i){...})</script> -->
+
+  <style>
+    :root {
+      --cream: #fdf8f4;
+      --blush: #f2d9d0;
+      --rose: #c9796a;
+      --rose-dark: #a85f52;
+      --taupe: #8a7570;
+      --text: #3a2e2b;
+      --text-light: #7a6e6b;
+      --border: #ecddd8;
+      --white: #ffffff;
+      --shadow: 0 4px 24px rgba(180,120,100,0.10);
+      --green: #4caf82;
+      --green-light: #edf7f2;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--cream);
+      font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    header {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 24px;
+      text-align: center;
+    }
+    .logo { font-size: 22px; letter-spacing: 0.18em; color: var(--rose); font-weight: 300; }
+    .logo span { font-weight: 700; }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      max-width: 520px;
+      margin: 20px auto 0;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-light);
+    }
+    .breadcrumb .step { padding: 4px 12px; border-radius: 20px; background: var(--border); }
+    .breadcrumb .step.active { background: var(--green); color: #fff; font-weight: 700; }
+    .breadcrumb .step.done { background: var(--blush); color: var(--rose-dark); }
+    .breadcrumb .arrow { color: var(--border); }
+
+    main {
+      max-width: 480px;
+      margin: 32px auto;
+      padding: 0 20px 60px;
+    }
+
+    /* Thank you card */
+    .thank-card {
+      background: var(--white);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      padding: 36px 28px;
+      text-align: center;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .thank-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, var(--rose), #e8a090, var(--rose));
+    }
+
+    /* Check icon */
+    .check-circle {
+      width: 72px;
+      height: 72px;
+      background: var(--green-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      border: 2px solid var(--green);
+    }
+    .check-circle svg {
+      width: 36px;
+      height: 36px;
+    }
+
+    .thank-title {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 10px;
+      letter-spacing: 0.04em;
+      color: var(--text);
+    }
+    .thank-sub {
+      font-size: 14px;
+      color: var(--text-light);
+      line-height: 1.8;
+      margin-bottom: 24px;
+    }
+
+    /* Order detail */
+    .order-detail {
+      background: var(--cream);
+      border-radius: 12px;
+      padding: 18px;
+      text-align: left;
+      margin-bottom: 20px;
+    }
+    .order-detail-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--taupe);
+      letter-spacing: 0.1em;
+      margin-bottom: 14px;
+    }
+    .order-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      margin-bottom: 8px;
+      color: var(--text-light);
+    }
+    .order-row:last-child { margin-bottom: 0; }
+    .order-row .val {
+      font-weight: 700;
+      color: var(--text);
+    }
+    .order-row .price-val {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--rose);
+    }
+
+    /* Product mini */
+    .product-mini {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px;
+      background: var(--cream);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    .product-mini-thumb {
+      width: 56px;
+      height: 70px;
+      background: linear-gradient(145deg, #f7ebe6, #edd5cc);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .product-mini-info strong {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+    .product-mini-info span {
+      font-size: 12px;
+      color: var(--text-light);
+    }
+
+    /* Next steps */
+    .next-steps {
+      background: var(--white);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 22px 20px;
+      margin-bottom: 20px;
+    }
+    .next-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--taupe);
+      letter-spacing: 0.1em;
+      margin-bottom: 16px;
+    }
+    .step-item {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+    .step-item:last-child { margin-bottom: 0; }
+    .step-num {
+      width: 28px;
+      height: 28px;
+      background: var(--blush);
+      color: var(--rose-dark);
+      border-radius: 50%;
+      font-size: 12px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-content strong {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+    .step-content span {
+      font-size: 12px;
+      color: var(--text-light);
+      line-height: 1.5;
+    }
+
+    /* GTM debug info (purchase_fired indicator) */
+    .gtm-debug-box {
+      background: #f0fff4;
+      border: 1px solid #b8e8cc;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 12px;
+      color: #2d6e4e;
+      margin-bottom: 16px;
+      display: none; /* JSで表示制御 */
+    }
+    .gtm-debug-box.show { display: block; }
+    .gtm-debug-box.warn {
+      background: #fff8f0;
+      border-color: #f0d8c8;
+      color: #8a5530;
+    }
+
+    /* Back to shop */
+    .btn-shop {
+      display: block;
+      width: 100%;
+      padding: 15px;
+      background: var(--rose);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      transition: background 0.2s;
+      text-align: center;
+    }
+    .btn-shop:hover { background: var(--rose-dark); }
+
+    /* Confetti animation */
+    @keyframes fall {
+      0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+    .confetti-piece {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      animation: fall linear forwards;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 12px;
+      color: var(--text-light);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Google Tag Manager (noscript) をここに設置 -->
+  <!-- <noscript>...</noscript> -->
+
+  <header>
+    <div class="logo">LUMI<span>ÈRE</span></div>
+  </header>
+
+  <!-- ステップナビ -->
+  <div class="breadcrumb">
+    <span class="step done">商品</span>
+    <span class="arrow">›</span>
+    <span class="step done">カート</span>
+    <span class="arrow">›</span>
+    <span class="step done">お支払い</span>
+    <span class="arrow">›</span>
+    <span class="step active">完了</span>
+  </div>
+
+  <main>
+
+    <!-- GTMデバッグ表示エリア (JSで制御) -->
+    <div class="gtm-debug-box" id="gtm-debug-box"></div>
+
+    <!-- Thank you card -->
+    <div class="thank-card">
+
+      <!-- チェックマーク -->
+      <div class="check-circle">
+        <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 18L15 25L28 11" stroke="#4caf82" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <h1 class="thank-title">ご購入ありがとうございます</h1>
+      <p class="thank-sub">
+        ご注文が確定しました。<br>
+        ご登録のメールアドレスに確認メールをお送りします。<br>
+        商品は3〜5営業日以内にお届けします。
+      </p>
+
+      <!-- 購入商品 -->
+      <div class="product-mini">
+        <div class="product-mini-thumb">
+          <svg viewBox="0 0 56 70" width="56" height="70" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="21" y="3" width="14" height="7" rx="3" fill="#c9796a"/>
+            <rect x="23" y="9" width="10" height="6" rx="2" fill="#e8bfb8"/>
+            <rect x="8" y="15" width="40" height="50" rx="10" fill="white" stroke="#ecddd8" stroke-width="1"/>
+            <rect x="9" y="35" width="38" height="30" rx="0" fill="#f2d9d0" opacity="0.4"/>
+            <rect x="14" y="20" width="28" height="34" rx="5" fill="#fdf0ed"/>
+            <rect x="18" y="26" width="20" height="2.5" rx="2" fill="#c9796a" opacity="0.6"/>
+            <rect x="16" y="31" width="24" height="2" rx="2" fill="#d0a09a" opacity="0.4"/>
+            <circle cx="28" cy="44" r="7" fill="#f2d9d0"/>
+            <text x="28" y="48" text-anchor="middle" font-size="7" fill="#c9796a" font-family="Georgia,serif" font-style="italic">L</text>
+          </svg>
+        </div>
+        <div class="product-mini-info">
+          <strong>AI Beauty Serum</strong>
+          <span>30mL · ¥4,200（税込）<br>数量：1点</span>
+        </div>
+      </div>
+
+      <!-- 注文詳細 -->
+      <div class="order-detail">
+        <p class="order-detail-title">ORDER DETAILS</p>
+        <div class="order-row">
+          <span>注文番号</span>
+          <span class="val" id="order-number">#LM-000000</span>
+        </div>
+        <div class="order-row">
+          <span>お支払い方法</span>
+          <span class="val">クレジットカード</span>
+        </div>
+        <div class="order-row">
+          <span>お届け予定</span>
+          <span class="val" id="delivery-date">—</span>
+        </div>
+        <div class="order-row">
+          <span>合計金額</span>
+          <span class="price-val">¥4,200</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 次のステップ -->
+    <div class="next-steps">
+      <p class="next-title">NEXT STEPS</p>
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>確認メールをご確認ください</strong>
+          <span>ご登録のメールアドレスに注文確認メールをお送りしました。</span>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>発送通知をお待ちください</strong>
+          <span>1〜2営業日以内に発送し、追跡番号をメールでお知らせします。</span>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <strong>美肌ケアをはじめましょう</strong>
+          <span>AI Beauty Serumで毎日のスキンケアをアップグレード。</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- トップに戻るボタン -->
+    <button class="btn-shop" onclick="window.location.href='index.html'">
+      ショッピングを続ける
+    </button>
+
+  </main>
+
+  <footer>© 2025 LUMIÈRE Beauty. All rights reserved.</footer>
+
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    // ============================================================
+    // purchase イベントの発火制御
+    // sessionStorage の purchase_ready を確認して判断する
+    // ============================================================
+    var purchaseReady = sessionStorage.getItem("purchase_ready");
+    var debugBox = document.getElementById("gtm-debug-box");
+
+    if (purchaseReady === "true") {
+      // ✅ 正規のフロー: checkout.html から遷移してきた場合のみ purchase を発火
+
+      dataLayer.push({
+        event: "purchase",
+        content_id: "beauty_serum_001",
+        value: 4200,
+        currency: "JPY"
+      });
+
+      // 二重発火防止: フラグを削除
+      sessionStorage.removeItem("purchase_ready");
+
+      // GTMデバッグ用表示 (任意)
+      debugBox.textContent = "✅ GTM検証: purchase イベントが発火しました（正規フロー）";
+      debugBox.classList.add("show");
+
+    } else {
+      // ⛔ 不正アクセス: purchase_ready が true でない場合は purchase を発火しない
+      debugBox.textContent = "⚠️ GTM検証: purchase_ready が未設定のため、purchase イベントは発火しませんでした（直接アクセス防止）";
+      debugBox.classList.add("show", "warn");
+    }
+
+    // 注文番号をランダム生成 (表示用)
+    var orderNum = "#LM-" + Math.floor(100000 + Math.random() * 900000);
+    document.getElementById("order-number").textContent = orderNum;
+
+    // お届け予定日を計算 (今日 + 3〜5営業日)
+    var today = new Date();
+    var delivery = new Date(today);
+    delivery.setDate(today.getDate() + 5);
+    var mm = delivery.getMonth() + 1;
+    var dd = delivery.getDate();
+    document.getElementById("delivery-date").textContent = mm + "月" + dd + "日（目安）";
+
+    // 🎊 紙吹雪アニメーション (purchase_ready が true の時のみ)
+    if (purchaseReady === "true") {
+      var colors = ["#c9796a", "#f2d9d0", "#e8bfb8", "#4caf82", "#fff0ec"];
+      for (var i = 0; i < 40; i++) {
+        (function (i) {
+          setTimeout(function () {
+            var piece = document.createElement("div");
+            piece.className = "confetti-piece";
+            piece.style.left = Math.random() * 100 + "vw";
+            piece.style.top = "-10px";
+            piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+            piece.style.animationDuration = (1.5 + Math.random() * 2) + "s";
+            piece.style.animationDelay = "0s";
+            piece.style.transform = "rotate(" + Math.random() * 360 + "deg)";
+            document.body.appendChild(piece);
+            setTimeout(function () { piece.remove(); }, 4000);
+          }, i * 60);
+        })(i);
+      }
+    }
+  </script>
+
+</body>
+</html>

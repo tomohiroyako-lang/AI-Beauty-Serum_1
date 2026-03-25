@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>お支払い情報 | LUMIÈRE</title>
+
+  <!-- dataLayer 初期化 -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+  </script>
+
+  <!-- Google Tag Manager をここに設置 -->
+  <!-- GTM head snippet ↓ -->
+  <!-- <script>(function(w,d,s,l,i){...})</script> -->
+
+  <style>
+    :root {
+      --cream: #fdf8f4;
+      --blush: #f2d9d0;
+      --rose: #c9796a;
+      --rose-dark: #a85f52;
+      --taupe: #8a7570;
+      --text: #3a2e2b;
+      --text-light: #7a6e6b;
+      --border: #ecddd8;
+      --white: #ffffff;
+      --shadow: 0 4px 24px rgba(180,120,100,0.10);
+      --focus: #c9796a40;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--cream);
+      font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    header {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 24px;
+      text-align: center;
+    }
+    .logo { font-size: 22px; letter-spacing: 0.18em; color: var(--rose); font-weight: 300; }
+    .logo span { font-weight: 700; }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      max-width: 520px;
+      margin: 20px auto 0;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-light);
+    }
+    .breadcrumb .step { padding: 4px 12px; border-radius: 20px; background: var(--border); }
+    .breadcrumb .step.active { background: var(--rose); color: #fff; font-weight: 700; }
+    .breadcrumb .step.done { background: var(--blush); color: var(--rose-dark); }
+    .breadcrumb .arrow { color: var(--border); }
+
+    main {
+      max-width: 520px;
+      margin: 24px auto;
+      padding: 0 20px 60px;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      letter-spacing: 0.04em;
+    }
+    .page-sub {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-bottom: 22px;
+    }
+
+    /* Form Card */
+    .form-card {
+      background: var(--white);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 24px 22px;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--taupe);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-group:last-child { margin-bottom: 0; }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-light);
+      margin-bottom: 6px;
+      letter-spacing: 0.06em;
+    }
+    label .required {
+      color: var(--rose);
+      margin-left: 4px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--text);
+      background: var(--white);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      font-family: inherit;
+      appearance: none;
+    }
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    select:focus {
+      border-color: var(--rose);
+      box-shadow: 0 0 0 3px var(--focus);
+    }
+    input::placeholder { color: #c0b0ad; }
+
+    /* Payment method radio */
+    .payment-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .payment-option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .payment-option:has(input:checked) {
+      border-color: var(--rose);
+      background: #fdf2f0;
+    }
+    .payment-option input[type="radio"] {
+      accent-color: var(--rose);
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+    .payment-option-label {
+      flex: 1;
+    }
+    .payment-option-label strong {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .payment-option-label span {
+      font-size: 12px;
+      color: var(--text-light);
+    }
+    .payment-icon { font-size: 22px; }
+
+    /* Card number fields */
+    .card-fields {
+      margin-top: 14px;
+      padding: 16px;
+      background: var(--cream);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+    .card-fields-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-light);
+      margin-bottom: 12px;
+      letter-spacing: 0.06em;
+    }
+    .card-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    /* Order Summary mini */
+    .mini-summary {
+      background: var(--blush);
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin-bottom: 16px;
+    }
+    .mini-summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+    }
+    .mini-summary-row .product-name-s { font-weight: 700; }
+    .mini-summary-row .product-price-s {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--rose);
+    }
+    .mini-summary-note {
+      font-size: 11px;
+      color: var(--taupe);
+      margin-top: 4px;
+    }
+
+    /* Place order button */
+    .btn-order {
+      display: block;
+      width: 100%;
+      padding: 17px;
+      background: var(--rose);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-order:hover { background: var(--rose-dark); }
+    .btn-order:active { transform: scale(0.98); }
+
+    .btn-back {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      background: transparent;
+      color: var(--text-light);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 14px;
+      cursor: pointer;
+      margin-top: 10px;
+      text-align: center;
+      transition: background 0.2s;
+    }
+    .btn-back:hover { background: var(--blush); }
+
+    .security-note {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text-light);
+      margin-top: 14px;
+    }
+
+    /* Note box */
+    .note-box {
+      background: #fff8f0;
+      border: 1px solid #f0d8c8;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 12px;
+      color: var(--taupe);
+      margin-bottom: 16px;
+      line-height: 1.7;
+    }
+    .note-box strong { color: var(--rose); }
+
+    footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 12px;
+      color: var(--text-light);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Google Tag Manager (noscript) をここに設置 -->
+  <!-- <noscript>...</noscript> -->
+
+  <header>
+    <div class="logo">LUMI<span>ÈRE</span></div>
+  </header>
+
+  <!-- ステップナビ -->
+  <div class="breadcrumb">
+    <span class="step done">商品</span>
+    <span class="arrow">›</span>
+    <span class="step done">カート</span>
+    <span class="arrow">›</span>
+    <span class="step active">お支払い</span>
+    <span class="arrow">›</span>
+    <span class="step">完了</span>
+  </div>
+
+  <main>
+    <h2>💳 お支払い情報の入力</h2>
+    <p class="page-sub">ご注文内容をご確認のうえ、お支払い情報を入力してください。</p>
+
+    <!-- GTMデバッグ用メモ -->
+    <div class="note-box">
+      <strong>📌 GTM検証メモ：</strong>このページロード時に <code>initiate_checkout</code> が発火します。<br>
+      「注文を確定する」ボタンでは <code>add_payment_info</code> が発火し、<strong>purchase は発火しません。</strong>
+    </div>
+
+    <!-- 注文サマリー (mini) -->
+    <div class="mini-summary">
+      <div class="mini-summary-row">
+        <span class="product-name-s">AI Beauty Serum × 1</span>
+        <span class="product-price-s">¥4,200</span>
+      </div>
+      <p class="mini-summary-note">送料無料 · 消費税込 · content_id: beauty_serum_001</p>
+    </div>
+
+    <!-- お客様情報 -->
+    <div class="form-card">
+      <p class="section-title">お客様情報</p>
+
+      <div class="form-group">
+        <label>お名前 <span class="required">*</span></label>
+        <input type="text" id="customer-name" placeholder="山田 花子" autocomplete="name">
+      </div>
+
+      <div class="form-group">
+        <label>メールアドレス <span class="required">*</span></label>
+        <input type="email" id="customer-email" placeholder="example@email.com" autocomplete="email">
+      </div>
+
+      <div class="form-group">
+        <label>電話番号</label>
+        <input type="text" id="customer-phone" placeholder="090-0000-0000" autocomplete="tel">
+      </div>
+    </div>
+
+    <!-- 配送先 -->
+    <div class="form-card">
+      <p class="section-title">配送先住所</p>
+
+      <div class="form-group">
+        <label>郵便番号 <span class="required">*</span></label>
+        <input type="text" id="postal-code" placeholder="123-4567" maxlength="8">
+      </div>
+
+      <div class="form-group">
+        <label>住所 <span class="required">*</span></label>
+        <input type="text" id="address" placeholder="東京都渋谷区神南1-2-3">
+      </div>
+
+      <div class="form-group">
+        <label>建物名・部屋番号</label>
+        <input type="text" id="address2" placeholder="○○マンション 101号室">
+      </div>
+    </div>
+
+    <!-- 支払い方法 -->
+    <div class="form-card">
+      <p class="section-title">支払い方法</p>
+
+      <div class="payment-options">
+        <!-- クレジットカード -->
+        <label class="payment-option">
+          <input type="radio" name="payment" value="credit" id="pay-credit" checked>
+          <span class="payment-icon">💳</span>
+          <div class="payment-option-label">
+            <strong>クレジットカード</strong>
+            <span>VISA · Mastercard · JCB · AMEX</span>
+          </div>
+        </label>
+
+        <!-- PayPay -->
+        <label class="payment-option">
+          <input type="radio" name="payment" value="paypay" id="pay-paypay">
+          <span class="payment-icon">🟡</span>
+          <div class="payment-option-label">
+            <strong>PayPay</strong>
+            <span>PayPayアプリで簡単お支払い</span>
+          </div>
+        </label>
+
+        <!-- コンビニ払い -->
+        <label class="payment-option">
+          <input type="radio" name="payment" value="convenience" id="pay-convenience">
+          <span class="payment-icon">🏪</span>
+          <div class="payment-option-label">
+            <strong>コンビニ払い</strong>
+            <span>ローソン · ファミリーマート · セブン-イレブン</span>
+          </div>
+        </label>
+      </div>
+
+      <!-- カード番号入力欄 (クレジット選択時に表示) -->
+      <div class="card-fields" id="card-fields">
+        <p class="card-fields-title">🔒 カード情報（ダミー入力欄）</p>
+        <div class="form-group">
+          <label>カード番号</label>
+          <input type="text" id="card-number" placeholder="0000 0000 0000 0000" maxlength="19">
+        </div>
+        <div class="card-row">
+          <div class="form-group">
+            <label>有効期限</label>
+            <input type="text" id="card-expiry" placeholder="MM / YY" maxlength="7">
+          </div>
+          <div class="form-group">
+            <label>セキュリティコード</label>
+            <input type="text" id="card-cvc" placeholder="000" maxlength="4">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>カード名義人</label>
+          <input type="text" id="card-name" placeholder="HANAKO YAMADA">
+        </div>
+      </div>
+    </div>
+
+    <!-- 注文を確定するボタン -->
+    <!-- ⚠️ このボタンは add_payment_info を発火する。purchase は絶対に発火しない。 -->
+    <button id="place-order-button" class="btn-order">注文を確定する</button>
+    <button class="btn-back" onclick="window.location.href='cart.html'">← カートに戻る</button>
+
+    <div class="security-note">
+      🔒 256bit SSL暗号化による安全な通信
+    </div>
+  </main>
+
+  <footer>© 2025 LUMIÈRE Beauty. All rights reserved.</footer>
+
+  <script>
+    // ページロード時イベント: initiate_checkout
+    window.dataLayer = window.dataLayer || [];
+    dataLayer.push({
+      event: "initiate_checkout"
+    });
+
+    // 支払い方法切り替えでカード入力欄を表示/非表示
+    const paymentRadios = document.querySelectorAll('input[name="payment"]');
+    const cardFields = document.getElementById("card-fields");
+
+    paymentRadios.forEach(function (radio) {
+      radio.addEventListener("change", function () {
+        if (this.value === "credit") {
+          cardFields.style.display = "block";
+        } else {
+          cardFields.style.display = "none";
+        }
+      });
+    });
+
+    // カード番号の自動フォーマット (スペース区切り)
+    document.getElementById("card-number").addEventListener("input", function () {
+      var val = this.value.replace(/\D/g, "").substring(0, 16);
+      this.value = val.replace(/(.{4})/g, "$1 ").trim();
+    });
+
+    // 有効期限フォーマット
+    document.getElementById("card-expiry").addEventListener("input", function () {
+      var val = this.value.replace(/\D/g, "").substring(0, 4);
+      if (val.length > 2) {
+        this.value = val.substring(0, 2) + " / " + val.substring(2);
+      } else {
+        this.value = val;
+      }
+    });
+
+    // 「注文を確定する」ボタン
+    // ⚠️ 重要: purchase は絶対に発火しない。add_payment_info のみ発火する。
+    document.getElementById("place-order-button").addEventListener("click", function () {
+
+      // ① add_payment_info を発火 (purchase ではない)
+      dataLayer.push({
+        event: "add_payment_info",
+        content_id: "beauty_serum_001",
+        value: 4200,
+        currency: "JPY"
+      });
+
+      // ② sessionStorage に purchase_ready フラグをセット
+      sessionStorage.setItem("purchase_ready", "true");
+
+      // ③ thanks.html へ遷移
+      window.location.href = "thanks.html";
+    });
+  </script>
+
+</body>
+</html>
